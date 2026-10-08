@@ -1,0 +1,97 @@
+class Solution {
+   /**
+    pick an element.
+    check if its anagram with others or not.
+    if its add the anagrams add it to the list.
+   */  public  List<List<String>> groupAnagrams(String[] strs) {
+
+    HashMap<Integer,List<String>> groups = new HashMap();
+    List<List<String>> userData = new LinkedList();
+    boolean added ;
+    int groupIndex = 0;
+    LinkedList<String> anagramGroup = null;
+    char[] chars;
+
+        for (int indexF = 0; indexF < strs.length; indexF++ )
+        {
+            
+            chars = strs[indexF].toCharArray();
+            Arrays.sort(chars);
+           if (groups.containsKey(Arrays.hashCode(chars)))
+           {
+             groups.get(Arrays.hashCode(chars)).add(strs[indexF]);
+           }
+           else
+           {
+            anagramGroup = new LinkedList();
+            anagramGroup.add(strs[indexF]);
+            groups.put(Arrays.hashCode(chars), anagramGroup);
+           }
+
+        }
+
+        for (List list: groups.values())
+        {
+            userData.add(list);
+        }
+
+        
+        return userData;
+    }
+    private boolean isAnagram(String s, String t)
+    {
+        if (s == null || t == null || s.length() != t.length())
+            return false;
+
+        HashMap<Character,Integer> uniqueS = new HashMap();
+        HashMap<Character,Integer> uniqueT = new HashMap();
+
+        char ch = 0;
+        for (int index = 0; index < s.length(); index++)
+        {
+            ch = s.charAt(index);
+
+            if (uniqueT.containsKey(ch))
+            {
+                if (uniqueT.get(ch) == 1)
+                    uniqueT.remove(ch,1);
+                else
+                    uniqueT.replace(ch, uniqueT.get(ch) - 1);
+                
+            }
+            else
+                if (uniqueS.get(ch) == null)
+                    uniqueS.put(ch,1);
+                else
+                    uniqueS.put(ch,uniqueS.get(ch) + 1);
+
+
+             ch = t.charAt(index);
+
+            if (uniqueS.containsKey(ch))
+            {
+                if (uniqueS.get(ch) == 1)
+                    uniqueS.remove(ch,1);
+                else
+                    uniqueS.replace(ch, uniqueS.get(ch) - 1);
+            
+            }
+            else
+                if ( uniqueT.get(ch) == null)
+                    uniqueT.put(ch,1);
+                else
+                    uniqueT.put(ch,uniqueT.get(ch) + 1);
+        }
+    return uniqueS.isEmpty();
+    }
+
+    private boolean  contain(String s, char ch)
+    {
+        for (int index = 0; index < s.length(); index++)
+            if (s.charAt(index) == ch)
+                return true;
+        return false;
+    } 
+
+
+}
